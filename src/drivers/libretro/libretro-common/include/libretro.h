@@ -146,7 +146,7 @@ extern "C" {
  * Buttons are returned in the range [0, 0x7fff].
  * Only use ANALOG type when polling for analog values.
  */
-#define RETRO_DEVICE_ANALOG       6
+#define RETRO_DEVICE_ANALOG       5
 
 /* Abstracts the concept of a pointing mechanism, e.g. touch.
  * This allows libretro to query in absolute coordinates where on the

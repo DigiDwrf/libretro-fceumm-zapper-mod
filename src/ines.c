@@ -125,7 +125,7 @@ struct INPSEL {
 static void SetInput(void) {
 	static struct INPSEL moo[] =
 	{
-		{0x19b0a9f1,	SI_GAMEPAD,		SI_ZAPPER,		 SIFC_NONE		},	/* 6-in-1 (MGC-023)(Unl)[!] */
+		{0x19b0a9f1,	SI_GAMEPAD,		SI_ZAPPER,		SIFC_NONE		},	/* 6-in-1 (MGC-023)(Unl)[!] */
 		{0x29de87af,	SI_GAMEPAD,		SI_GAMEPAD,		SIFC_FTRAINERB	},	/* Aerobics Studio */
 		{0xd89e5a67,	SI_UNSET,		SI_UNSET,		SIFC_ARKANOID	},	/* Arkanoid (J) */
 		{0x0f141525,	SI_UNSET,		SI_UNSET,		SIFC_ARKANOID	},	/* Arkanoid 2(J) */

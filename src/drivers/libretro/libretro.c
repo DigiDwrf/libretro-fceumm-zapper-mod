@@ -1717,26 +1717,26 @@ static void FCEUD_UpdateInput(void)
 		case RETRO_DEVICE_ARKANOID:
 		case RETRO_DEVICE_ZAPPER:
 			get_mouse_input(port, nes_input.MouseData[port]);
-
+		case RETRO_DEVICE_LCDZAPPER:
 			int i = 0;
 			uint8_t input_buf = 0;
-			int player_enabled = (nes_input.type[player] == RETRO_DEVICE_ZAPPER) || (nes_input.type[player] == RETRO_DEVICE_NESLIGHTGUN);
+			int port_enabled = (nes_input.type[port] == RETRO_DEVICE_LCDZAPPER) || (nes_input.type[port] == RETRO_DEVICE_NESLIGHTGUN);
 
-			if (player_enabled)
+			if (port_enabled)
 			{
 				int16_t ret;
 
 			if (libretro_supports_bitmasks)
 			{
-				ret = input_cb(player, RETRO_DEVICE_NESLIGHTGUN, 0, RETRO_DEVICE_ID_NESLIGHTGUN_MASK);
+				ret = input_cb(port, RETRO_DEVICE_NESLIGHTGUN, 0, RETRO_DEVICE_ID_NESLIGHTGUN_MASK);
 
 				if (ret & (1 << RETRO_DEVICE_ID_NESLIGHTGUN_TRIGGER))
 					input_buf |= GUN_TRIGGER;
 			    if (ret & (1 << RETRO_DEVICE_ID_NESLIGHTGUN_HIT))
 					input_buf |= GUN_HIT;
 			}
-			nes_input.LightgunData |= (input_buf & 0xff) << (player << 3);
-			break;
+			nes_input.LightgunData |= (input_buf & 0xff) << (port << 3);
+	    break;
 		}
 	}
 }

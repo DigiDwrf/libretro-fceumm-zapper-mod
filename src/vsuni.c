@@ -319,7 +319,7 @@ void FCEU_VSUniCheck(uint64 md5partial, int *MapperNo, int *Mirroring) {
 				vsdip = vs->predip;
 			}
 			if (vs->ioption & IOPTION_GUN) {
-				GameInfo->input[0] = SI_ZAPPER;
+				GameInfo->input[0] = SI_LCDZAPPER;
 				GameInfo->input[1] = SI_NONE;
 			} else {
 				GameInfo->input[0] = GameInfo->input[1] = SI_GAMEPAD;

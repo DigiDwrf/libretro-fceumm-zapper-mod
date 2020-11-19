@@ -249,7 +249,7 @@ static int CTRL(FCEUFILE *fp) {
 		else
 			GameInfo->input[0] = GameInfo->input[1] = SI_NONE;
 		if (t & 2)
-			GameInfo->input[1] = SI_ZAPPER;
+			GameInfo->input[1] = SI_LCDZAPPER;
 	} else {
 		FCEU_printf(" Incorrect Control Chunk Size (%d). Data is:", uchead.info);
 		for (i = 0; i < uchead.info; i++) {

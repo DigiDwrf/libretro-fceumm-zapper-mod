@@ -1717,7 +1717,7 @@ case RETRO_DEVICE_FC_ARKANOID:
 case RETRO_DEVICE_FC_OEKAKIDS:
 case RETRO_DEVICE_FC_SHADOW:
 	get_mouse_input(0, nes_input.FamicomData);
-	break;
+break;
 }
 
 if (input_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R2))
@@ -1736,7 +1736,6 @@ if (GameInfo->type == GIT_FDS)   /* Famicom Disk System */
 	if (curR && !prevR)
 		FCEU_FDSInsert(-1);        /* Insert or eject the disk */
 	prevR = curR;
-}
 }
 
 void FCEUD_Update(uint8* XBuf, int32* Buffer, int Count)

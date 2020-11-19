@@ -783,8 +783,6 @@ static unsigned nes_to_libretro(int d)
 		return RETRO_DEVICE_NONE;
 	case SI_ZAPPER:
 		return RETRO_DEVICE_ZAPPER;
-	case SI_LCDZAPPER:
-		return RETRO_DEVICE_LCDZAPPER;
 	case SI_ARKANOID:
 		return RETRO_DEVICE_ARKANOID;
 	}

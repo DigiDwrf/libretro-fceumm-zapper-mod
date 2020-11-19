@@ -7,7 +7,7 @@ image: Visual Studio 2017
 environment:
   makefile_location: "."
   makefile_name: makefile.libretro
-  target_name: fceumm_LCD
+  target_name: fceumm
 
 configuration:
   - release

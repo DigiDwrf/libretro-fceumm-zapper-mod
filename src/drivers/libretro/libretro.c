@@ -734,7 +734,7 @@ static void update_nes_controllers(unsigned port, unsigned device)
 			FCEU_printf(" Player %u: Zapper\n", port + 1);
 			break;
 		case RETRO_DEVICE_LCDZAPPER:
-			FCEUI_SetInput(port, SI_LCDZAPPER, nes_input.LightgunData[port], 1);
+			FCEUI_SetInput(port, SI_LCDZAPPER, nes_input.LightgunData, 1);
 			FCEU_printf(" Player %u: LCD Zapper\n", port + 1);
 			break;
 		case RETRO_DEVICE_ARKANOID:

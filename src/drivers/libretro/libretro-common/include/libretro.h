@@ -137,6 +137,13 @@ extern "C" {
  */
 #define RETRO_DEVICE_LIGHTGUN     4
 
+ /* NES LIGHTGUN device is similar to Zapper for the NES.
+  * It filters light and accept 15Khz frequencies only,
+  * reporting a HIGH or LOW signal.
+  * It features just a trigger.
+  */
+#define RETRO_DEVICE_NESLIGHTGUN  5
+
 /* The ANALOG device is an extension to JOYPAD (RetroPad).
  * Similar to DualShock2 it adds two analog sticks and all buttons can
  * be analog. This is treated as a separate device type as it returns
@@ -146,7 +153,7 @@ extern "C" {
  * Buttons are returned in the range [0, 0x7fff].
  * Only use ANALOG type when polling for analog values.
  */
-#define RETRO_DEVICE_ANALOG       5
+#define RETRO_DEVICE_ANALOG       6
 
 /* Abstracts the concept of a pointing mechanism, e.g. touch.
  * This allows libretro to query in absolute coordinates where on the
@@ -245,6 +252,12 @@ extern "C" {
 #define RETRO_DEVICE_ID_LIGHTGUN_CURSOR           3 /*Use Aux:A*/
 #define RETRO_DEVICE_ID_LIGHTGUN_TURBO            4 /*Use Aux:B*/
 #define RETRO_DEVICE_ID_LIGHTGUN_PAUSE            5 /*Use Start*/
+
+/* Id values for NES LIGHTGUN. */
+#define RETRO_DEVICE_ID_NESLIGHTGUN_TRIGGER       0
+#define RETRO_DEVICE_ID_NESLIGHTGUN_HIT           1
+
+#define RETRO_DEVICE_ID_NESLIGHTGUN_MASK    256
 
 /* Id values for POINTER. */
 #define RETRO_DEVICE_ID_POINTER_X         0

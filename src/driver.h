@@ -66,6 +66,7 @@ void FCEUI_DisableFourScore(int s);
 #define SI_POWERPADB 4
 #define SI_ARKANOID  5
 #define SI_MOUSE     6
+#define SI_LCDZAPPER 7
 
 #define SIFC_UNSET     -1
 #define SIFC_NONE      0

@@ -215,12 +215,11 @@ struct retro_core_option_definition option_defs_common[] = {
       "Selects device to use for zapper games.",
       {
          { "lightgun",    NULL },
-         { "LCD lightgun",    NULL },
          { "touchscreen", NULL },
          { "mouse",       NULL },
          { NULL, NULL},
       },
-      "LCD lightgun",
+      "lightgun",
    },
    {
       "fceumm_show_crosshair",

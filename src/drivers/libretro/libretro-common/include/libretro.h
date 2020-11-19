@@ -253,12 +253,6 @@ extern "C" {
 #define RETRO_DEVICE_ID_LIGHTGUN_TURBO            4 /*Use Aux:B*/
 #define RETRO_DEVICE_ID_LIGHTGUN_PAUSE            5 /*Use Start*/
 
-/* Id values for NES LIGHTGUN. */
-#define RETRO_DEVICE_ID_NESLIGHTGUN_TRIGGER       0
-#define RETRO_DEVICE_ID_NESLIGHTGUN_HIT           1
-
-#define RETRO_DEVICE_ID_NESLIGHTGUN_MASK    256
-
 /* Id values for POINTER. */
 #define RETRO_DEVICE_ID_POINTER_X         0
 #define RETRO_DEVICE_ID_POINTER_Y         1

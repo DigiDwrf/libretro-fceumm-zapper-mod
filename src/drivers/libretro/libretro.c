@@ -38,8 +38,7 @@
 
 #define RETRO_DEVICE_AUTO        RETRO_DEVICE_JOYPAD
 #define RETRO_DEVICE_GAMEPAD     RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_JOYPAD, 1)
-#define RETRO_DEVICE_ZAPPER      RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_MOUSE,  0)
-#define RETRO_DEVICE_LCDZAPPER   RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_NESLIGHTGUN,  0)
+#define RETRO_DEVICE_ZAPPER      RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_LIGHTGUN,  0)
 #define RETRO_DEVICE_ARKANOID    RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_MOUSE,  1)
 
 #define RETRO_DEVICE_FC_ARKANOID RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_MOUSE,  2)
@@ -1719,32 +1718,6 @@ static void FCEUD_UpdateInput(void)
 		case RETRO_DEVICE_ARKANOID:
 		case RETRO_DEVICE_ZAPPER:
 			get_mouse_input(port, nes_input.MouseData[port]);
-		case RETRO_DEVICE_LCDZAPPER:
-			int i = 0;
-			uint8_t input_buf = 0;
-			int port_enabled = (nes_input.type[port] == RETRO_DEVICE_LCDZAPPER) || (nes_input.type[port] == RETRO_DEVICE_NESLIGHTGUN);
-
-			if (port_enabled)
-			{
-				int16_t ret;
-
-			if (libretro_supports_bitmasks)
-			{
-				ret = input_cb(port, RETRO_DEVICE_NESLIGHTGUN, 0, RETRO_DEVICE_ID_NESLIGHTGUN_MASK);
-
-				if (ret & (1 << RETRO_DEVICE_ID_NESLIGHTGUN_TRIGGER))
-					input_buf |= GUN_TRIGGER;
-			    if (ret & (1 << RETRO_DEVICE_ID_NESLIGHTGUN_HIT))
-					input_buf |= GUN_HIT;
-			}
-			else
-			{
-				for (i = 0; i < MAX_BUTTONS; i++)
-					input_buf |= input_cb(player, RETRO_DEVICE_NESLIGHTGUN, 0,
-						zappermap[i].retro) ? zappermap[i].nes : 0;
-			}
-
-			nes_input.LightgunData |= (input_buf & 0xff) << (port << 3);
 	    break;
 		}
 	}
@@ -2357,9 +2330,6 @@ bool retro_load_game(const struct retro_game_info* game)
 	   { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X,     "Turbo A" },
 	   { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y,     "Turbo B" },
 
-       { 0, RETRO_DEVICE_NESLIGHTGUN, 0, RETRO_DEVICE_ID_NESLIGHTGUN_TRIGGER,     "Trigger" },
-	   { 0, RETRO_DEVICE_NESLIGHTGUN, 0, RETRO_DEVICE_ID_NESLIGHTGUN_HIT,         "Hit detection" },
-
 	   { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,  "D-Pad Left" },
 	   { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,    "D-Pad Up" },
 	   { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_DOWN,  "D-Pad Down" },
@@ -2370,9 +2340,6 @@ bool retro_load_game(const struct retro_game_info* game)
 	   { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_START,    "Start" },
 	   { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X,     "Turbo A" },
 	   { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y,     "Turbo B" },
-
-	   { 1, RETRO_DEVICE_NESLIGHTGUN, 0, RETRO_DEVICE_ID_NESLIGHTGUN_TRIGGER,     "Trigger" },
-	   { 1, RETRO_DEVICE_NESLIGHTGUN, 0, RETRO_DEVICE_ID_NESLIGHTGUN_HIT,         "Hit detection" },
 
 	   { 2, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,  "D-Pad Left" },
 	   { 2, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,    "D-Pad Up" },

@@ -39,7 +39,7 @@
 #define RETRO_DEVICE_AUTO        RETRO_DEVICE_JOYPAD
 #define RETRO_DEVICE_GAMEPAD     RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_JOYPAD, 1)
 #define RETRO_DEVICE_ZAPPER      RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_MOUSE,  0)
-#define RETRO_DEVICE_LCDZAPPER   RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_NESLIGHTGUN,  1)
+#define RETRO_DEVICE_LCDZAPPER   RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_NESLIGHTGUN,  0)
 #define RETRO_DEVICE_ARKANOID    RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_MOUSE,  1)
 
 #define RETRO_DEVICE_FC_ARKANOID RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_MOUSE,  2)
@@ -111,6 +111,9 @@ static const keymap bindmap[] = {
    { RETRO_DEVICE_ID_JOYPAD_UP, JOY_UP },
    { RETRO_DEVICE_ID_JOYPAD_DOWN, JOY_DOWN },
    { RETRO_DEVICE_ID_JOYPAD_LEFT, JOY_LEFT },
+};
+
+static const keymap zappermap[] = {
    { RETRO_DEVICE_ID_NESLIGHTGUN_TRIGGER, GUN_TRIGGER },
    { RETRO_DEVICE_ID_NESLIGHTGUN_HIT, GUN_HIT },
 };
@@ -721,7 +724,7 @@ static void update_nes_controllers(unsigned port, unsigned device)
 {
 	nes_input.type[port] = device;
 
-	if (port < 4)
+	if (port < 5)
 	{
 		switch (device)
 		{
@@ -750,7 +753,7 @@ static void update_nes_controllers(unsigned port, unsigned device)
 		}
 	}
 
-	if (port == 4)
+	if (port == 5)
 	{
 		switch (device)
 		{
@@ -933,8 +936,8 @@ void retro_set_environment(retro_environment_t cb)
 	};
 
 	static const struct retro_controller_info ports[] = {
-	   { pads1, 3 },
-	   { pads2, 4 },
+	   { pads1, 4 },
+	   { pads2, 5 },
 	   { pads3, 2 },
 	   { pads4, 2 },
 	   { pads5, 5 },
@@ -1286,7 +1289,7 @@ static void check_variables(bool startup)
 		if (!strcmp(var.value, "mouse")) zappermode = RetroMouse;
 		else if (!strcmp(var.value, "touchscreen")) zappermode = RetroPointer;
 		else if (!strcmp(var.value, "lightgun")) zappermode = RetroLightgun;
-		else zappermode = RetroLCDLightgun; /*default setting*/
+		else if (!strcmp(var.value, "zapper")) zappermode = RetroLCDLightgun; /*default setting*/
 	}
 
 	var.key = "fceumm_zapper_tolerance";
@@ -1587,8 +1590,7 @@ void get_mouse_input(unsigned port, uint32_t* zapdata)
 		if (input_cb(port, RETRO_DEVICE_POINTER, 0, RETRO_DEVICE_ID_POINTER_PRESSED))
 			zapdata[2] |= 0x1;
 	}
-	else /* lightgun device */
-	{
+	else if (zappermode == RetroLightgun) {
 		int offset_x = (adjx ? 0X8FF : 0);
 		int offset_y = (adjy ? 0X999 : 0);
 		int offscreen;
@@ -1735,6 +1737,13 @@ static void FCEUD_UpdateInput(void)
 			    if (ret & (1 << RETRO_DEVICE_ID_NESLIGHTGUN_HIT))
 					input_buf |= GUN_HIT;
 			}
+			else
+			{
+				for (i = 0; i < MAX_BUTTONS; i++)
+					input_buf |= input_cb(player, RETRO_DEVICE_NESLIGHTGUN, 0,
+						zappermap[i].retro) ? zappermap[i].nes : 0;
+			}
+
 			nes_input.LightgunData |= (input_buf & 0xff) << (port << 3);
 	    break;
 		}
@@ -1747,7 +1756,7 @@ switch (nes_input.type[4])
 case RETRO_DEVICE_FC_ARKANOID:
 case RETRO_DEVICE_FC_OEKAKIDS:
 case RETRO_DEVICE_FC_SHADOW:
-	get_mouse_input(0, nes_input.FamicomData);
+	get_zapper_input(0, nes_input.FamicomData);
 	break;
 }
 

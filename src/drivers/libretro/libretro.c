@@ -1756,7 +1756,7 @@ switch (nes_input.type[4])
 case RETRO_DEVICE_FC_ARKANOID:
 case RETRO_DEVICE_FC_OEKAKIDS:
 case RETRO_DEVICE_FC_SHADOW:
-	get_zapper_input(0, nes_input.FamicomData);
+	get_mouse_input(0, nes_input.FamicomData);
 	break;
 }
 

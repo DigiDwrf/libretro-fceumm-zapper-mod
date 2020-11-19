@@ -112,11 +112,6 @@ static const keymap bindmap[] = {
    { RETRO_DEVICE_ID_JOYPAD_LEFT, JOY_LEFT },
 };
 
-static const keymap zappermap[] = {
-   { RETRO_DEVICE_ID_NESLIGHTGUN_TRIGGER, GUN_TRIGGER },
-   { RETRO_DEVICE_ID_NESLIGHTGUN_HIT, GUN_HIT },
-};
-
 typedef struct {
 	bool enable_4player;                /* four-score / 4-player adapter used */
 	bool up_down_allowed;               /* disabled simultaneous up+down and left+right dpad combinations */
@@ -735,10 +730,6 @@ static void update_nes_controllers(unsigned port, unsigned device)
 			FCEUI_SetInput(port, SI_ZAPPER, nes_input.MouseData[port], 1);
 			FCEU_printf(" Player %u: Zapper\n", port + 1);
 			break;
-		case RETRO_DEVICE_LCDZAPPER:
-			FCEUI_SetInput(port, SI_LCDZAPPER, nes_input.LightgunData, 1);
-			FCEU_printf(" Player %u: LCD Zapper\n", port + 1);
-			break;
 		case RETRO_DEVICE_ARKANOID:
 			FCEUI_SetInput(port, SI_ARKANOID, nes_input.MouseData[port], 0);
 			FCEU_printf(" Player %u: Arkanoid\n", port + 1);
@@ -900,7 +891,6 @@ void retro_set_environment(retro_environment_t cb)
 	   { "Auto",    RETRO_DEVICE_AUTO },
 	   { "Gamepad", RETRO_DEVICE_GAMEPAD },
 	   { "Zapper",  RETRO_DEVICE_ZAPPER },
-	   { "LCD Zapper",  RETRO_DEVICE_LCDZAPPER },
 	   { 0, 0 },
 	};
 
@@ -909,7 +899,6 @@ void retro_set_environment(retro_environment_t cb)
 	   { "Gamepad",  RETRO_DEVICE_GAMEPAD },
 	   { "Arkanoid", RETRO_DEVICE_ARKANOID },
 	   { "Zapper",   RETRO_DEVICE_ZAPPER },
-	   { "LCD Zapper",  RETRO_DEVICE_LCDZAPPER },
 	   { 0, 0 },
 	};
 
@@ -935,8 +924,8 @@ void retro_set_environment(retro_environment_t cb)
 	};
 
 	static const struct retro_controller_info ports[] = {
-	   { pads1, 4 },
-	   { pads2, 5 },
+	   { pads1, 3 },
+	   { pads2, 4 },
 	   { pads3, 2 },
 	   { pads4, 2 },
 	   { pads5, 5 },

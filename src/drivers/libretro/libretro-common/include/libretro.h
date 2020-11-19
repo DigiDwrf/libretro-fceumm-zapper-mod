@@ -137,13 +137,6 @@ extern "C" {
  */
 #define RETRO_DEVICE_LIGHTGUN     4
 
- /* NES LIGHTGUN device is similar to Zapper for the NES.
-  * It filters light and accept 15Khz frequencies only,
-  * reporting a HIGH or LOW signal.
-  * It features just a trigger.
-  */
-#define RETRO_DEVICE_NESLIGHTGUN  5
-
 /* The ANALOG device is an extension to JOYPAD (RetroPad).
  * Similar to DualShock2 it adds two analog sticks and all buttons can
  * be analog. This is treated as a separate device type as it returns

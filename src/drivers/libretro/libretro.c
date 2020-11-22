@@ -1746,7 +1746,7 @@ static void FCEUD_UpdateInput(void)
             get_mouse_input(port, nes_input.MouseData[port]);
             break;
          case RETRO_DEVICE_LCDZAPPER:
-            get_lightgun_input(port, nes_input.LightgunData[port]);
+            get_lightgun_input(port, nes_input.LightgunData);
             break;
       }
    }

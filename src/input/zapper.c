@@ -183,4 +183,3 @@ INPUTC *FCEU_InitZapper(int w) {
 	else
 		return(&ZAPC);
 }
-

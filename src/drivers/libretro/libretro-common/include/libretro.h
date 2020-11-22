@@ -180,6 +180,9 @@ extern "C" {
  * are registered at this point. */
 #define RETRO_DEVICE_POINTER      6
 
+ /* The NES ZAPPER reports two values: TRIGGER and HIT*/
+#define RETRO_DEVICE_NESZAPPER      7
+
 /* Buttons for the RetroPad (JOYPAD).
  * The placement of these is equivalent to placements on the
  * Super Nintendo controller.
@@ -251,6 +254,10 @@ extern "C" {
 #define RETRO_DEVICE_ID_POINTER_Y         1
 #define RETRO_DEVICE_ID_POINTER_PRESSED   2
 #define RETRO_DEVICE_ID_POINTER_COUNT     3
+
+/* Id values for NES ZAPPER. */
+#define RETRO_DEVICE_ID_NESZAPPER_TRIGGER      0
+#define RETRO_DEVICE_ID_NESZAPPER_HIT          1
 
 /* Returned from retro_get_region(). */
 #define RETRO_REGION_NTSC  0

@@ -130,4 +130,7 @@ extern uint8 vsdip;
 #define JOY_LEFT     0x40
 #define JOY_RIGHT    0x80
 
+#define NESZAPPER_HIT        0x40
+#define NESZAPPER_TRIGGER    0x80
+
 #endif

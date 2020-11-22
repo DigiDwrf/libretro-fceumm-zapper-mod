@@ -39,6 +39,7 @@
 #define RETRO_DEVICE_AUTO        RETRO_DEVICE_JOYPAD
 #define RETRO_DEVICE_GAMEPAD     RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_JOYPAD, 1)
 #define RETRO_DEVICE_ZAPPER      RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_MOUSE,  0)
+#define RETRO_DEVICE_LCDZAPPER   RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_NESZAPPER,  0)
 #define RETRO_DEVICE_ARKANOID    RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_MOUSE,  1)
 
 #define RETRO_DEVICE_FC_ARKANOID RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_MOUSE,  2)
@@ -89,6 +90,7 @@ static bool use_par;
 
 #define MAX_BUTTONS 8
 #define TURBO_BUTTONS 2
+
 unsigned char turbo_button_toggle[MAX_PLAYERS][TURBO_BUTTONS] = { {0} };
 
 typedef struct
@@ -113,6 +115,11 @@ static const keymap bindmap[] = {
    { RETRO_DEVICE_ID_JOYPAD_RIGHT, JOY_RIGHT },
 };
 
+static const keymap lightgunmap[] = {
+   { RETRO_DEVICE_ID_NESZAPPER_TRIGGER, NESZAPPER_TRIGGER },
+   { RETRO_DEVICE_ID_NESZAPPER_HIT, NESZAPPER_HIT },
+};
+
 typedef struct {
    bool enable_4player;                /* four-score / 4-player adapter used */
    bool up_down_allowed;               /* disabled simultaneous up+down and left+right dpad combinations */
@@ -126,12 +133,13 @@ typedef struct {
    /* input data */
    uint32_t JSReturn;                  /* player input data, 1 byte per player (1-4) */
    uint32_t MouseData[MAX_PORTS][3];   /* nes mouse data */
+   uint32_t LightgunData[MAX_PORTS];/* nes lightgun data */
    uint32_t FamicomData[3];            /* Famicom expansion port data */
 } NES_INPUT_T;
 
 static NES_INPUT_T nes_input = { 0 };
-enum RetroZapperInputModes{RetroLightgun, RetroMouse, RetroPointer};
-static enum RetroZapperInputModes zappermode = RetroLightgun;
+enum RetroZapperInputModes{RetroLightgun, RetroMouse, RetroPointer, RetroZapper};
+static enum RetroZapperInputModes zappermode = RetroZapper;
 
 static bool libretro_supports_bitmasks = false;
 
@@ -728,6 +736,10 @@ static void update_nes_controllers(unsigned port, unsigned device)
          FCEUI_SetInput(port, SI_ZAPPER, nes_input.MouseData[port], 1);
          FCEU_printf(" Player %u: Zapper\n", port + 1);
          break;
+      case RETRO_DEVICE_LCDZAPPER:
+          FCEUI_SetInput(port, SI_LCDZAPPER, nes_input.LightgunData[port], 1);
+          FCEU_printf(" Player %u: NES Zapper\n", port + 1);
+          break;
       case RETRO_DEVICE_ARKANOID:
          FCEUI_SetInput(port, SI_ARKANOID, nes_input.MouseData[port], 0);
          FCEU_printf(" Player %u: Arkanoid\n", port + 1);
@@ -781,6 +793,8 @@ static unsigned nes_to_libretro(int d)
       return RETRO_DEVICE_NONE;
    case SI_ZAPPER:
       return RETRO_DEVICE_ZAPPER;
+   case SI_LCDZAPPER:
+       return RETRO_DEVICE_LCDZAPPER;
    case SI_ARKANOID:
       return RETRO_DEVICE_ARKANOID;
    }
@@ -1573,7 +1587,7 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
       if (input_cb(port, RETRO_DEVICE_POINTER, 0, RETRO_DEVICE_ID_POINTER_PRESSED))
          zapdata[2] |= 0x1;
    }
-   else /* lightgun device */
+   else //zappermode == RetroLightgun) 
    {
       int offset_x = (adjx ? 0X8FF : 0);
       int offset_y = (adjy ? 0X999 : 0);
@@ -1602,6 +1616,32 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
       if ( trigger || offscreen_shot )
          zapdata[2] |= 0x1;
    }
+}
+
+void get_lightgun_input(unsigned port, uint32_t *zapdata)
+{
+    if (zappermode == RetroZapper)
+    {
+        uint8_t input_buf = 0;
+        int player_enabled = (nes_input.type[port] == RETRO_DEVICE_NESZAPPER);
+
+        if (nes_input.type[port] == RETRO_DEVICE_NESZAPPER)
+        {
+            if (1 << RETRO_DEVICE_ID_NESZAPPER_HIT)
+                input_buf |= NESZAPPER_HIT;
+            if (1 << RETRO_DEVICE_ID_NESZAPPER_TRIGGER)
+                input_buf |= NESZAPPER_TRIGGER;
+        }
+        else
+        {
+            for (int i = 0; i < 8; i++)
+                if (i == 4) {}
+                input_buf +=
+                input_buf |= input_cb(port, RETRO_DEVICE_NESZAPPER, 0, lightgunmap[i].retro) ? lightgunmap[i].nes : 0;
+            }
+        }
+        zapdata |= (input_buf & 0xff) << (port << 3);
+    }
 }
 
 static void FCEUD_UpdateInput(void)
@@ -1703,6 +1743,9 @@ static void FCEUD_UpdateInput(void)
          case RETRO_DEVICE_ARKANOID:
          case RETRO_DEVICE_ZAPPER:
             get_mouse_input(port, nes_input.MouseData[port]);
+            break;
+         case RETRO_DEVICE_LCDZAPPER:
+            get_lightgun_input(port, nes_input.LightgunData[port]);
             break;
       }
    }
@@ -2314,6 +2357,9 @@ bool retro_load_game(const struct retro_game_info *game)
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X,     "Turbo A" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y,     "Turbo B" },
 
+      { 0, RETRO_DEVICE_NESZAPPER, 0, RETRO_DEVICE_ID_NESZAPPER_HIT,  "Detection" },
+      { 0, RETRO_DEVICE_NESZAPPER, 0, RETRO_DEVICE_ID_NESZAPPER_TRIGGER,    "Trigger" },
+
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,  "D-Pad Left" },
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,    "D-Pad Up" },
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_DOWN,  "D-Pad Down" },
@@ -2324,6 +2370,9 @@ bool retro_load_game(const struct retro_game_info *game)
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_START,    "Start" },
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X,     "Turbo A" },
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y,     "Turbo B" },
+
+      { 1, RETRO_DEVICE_NESZAPPER, 0, RETRO_DEVICE_ID_NESZAPPER_HIT,  "Detection" },
+      { 1, RETRO_DEVICE_NESZAPPER, 0, RETRO_DEVICE_ID_NESZAPPER_TRIGGER,    "Trigger" },
 
       { 2, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,  "D-Pad Left" },
       { 2, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,    "D-Pad Up" },

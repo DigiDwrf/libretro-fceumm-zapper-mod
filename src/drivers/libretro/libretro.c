@@ -1634,7 +1634,7 @@ void get_lightgun_input(unsigned port, uint32_t *zapdata)
         }
         else
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++) {
                 if (i == 0) {
                     input_buf = 1;
                 }

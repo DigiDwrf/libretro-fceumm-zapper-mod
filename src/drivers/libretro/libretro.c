@@ -1634,9 +1634,10 @@ void get_lightgun_input(unsigned port, uint32_t *zapdata)
         }
         else
         {
-            for (int i = 0; i < 8; i++)
-                if (i == 4) {}
-                input_buf +=
+            for (int i = 0; i < 4; i++)
+                if (i == 0) {
+                    input_buf = 1;
+                }
                 input_buf |= input_cb(port, RETRO_DEVICE_NESZAPPER, 0, lightgunmap[i].retro) ? lightgunmap[i].nes : 0;
             }
         }

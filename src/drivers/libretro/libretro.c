@@ -133,7 +133,7 @@ typedef struct {
    /* input data */
    uint32_t JSReturn;                  /* player input data, 1 byte per player (1-4) */
    uint32_t MouseData[MAX_PORTS][3];   /* nes mouse data */
-   uint32_t LightgunData[MAX_PORTS];/* nes lightgun data */
+   uint32_t LightgunData;              /* nes lightgun data */
    uint32_t FamicomData[3];            /* Famicom expansion port data */
 } NES_INPUT_T;
 
@@ -737,7 +737,7 @@ static void update_nes_controllers(unsigned port, unsigned device)
          FCEU_printf(" Player %u: Zapper\n", port + 1);
          break;
       case RETRO_DEVICE_LCDZAPPER:
-          FCEUI_SetInput(port, SI_LCDZAPPER, nes_input.LightgunData[port], 1);
+          FCEUI_SetInput(port, SI_LCDZAPPER, nes_input.LightgunData, 1);
           FCEU_printf(" Player %u: NES Zapper\n", port + 1);
           break;
       case RETRO_DEVICE_ARKANOID:
@@ -1641,7 +1641,7 @@ void get_lightgun_input(unsigned port, uint32_t *zapdata)
                 input_buf |= input_cb(port, RETRO_DEVICE_NESZAPPER, 0, lightgunmap[i].retro) ? lightgunmap[i].nes : 0;
             }
         }
-        zapdata |= (input_buf & 0xff) << (port << 3);
+        nes_input.LightgunData |= (input_buf & 0xff) << (port << 3);
     }
 }
 

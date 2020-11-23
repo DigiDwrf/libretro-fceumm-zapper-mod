@@ -1589,7 +1589,7 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
       if (input_cb(port, RETRO_DEVICE_POINTER, 0, RETRO_DEVICE_ID_POINTER_PRESSED))
          zapdata[2] |= 0x1;
    }
-   else //zappermode == RetroLightgun) 
+   else //zappermode == RetroLightgun 
    {
       int offset_x = (adjx ? 0X8FF : 0);
       int offset_y = (adjy ? 0X999 : 0);
@@ -1622,8 +1622,8 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
 
 void get_lightgun_input(unsigned port, uint32_t* zapdata)
 {
-        zapdata = input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[0].retro) ? bindmap[0].nes : 0;
-        zapdata = input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[1].retro) ? bindmap[1].nes : 0 << 1;
+        zapdata |= input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[0].retro) ? bindmap[0].nes : 0;
+        zapdata |= input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[1].retro) ? bindmap[1].nes : 0 << 1;
 }
 
 static void FCEUD_UpdateInput(void)

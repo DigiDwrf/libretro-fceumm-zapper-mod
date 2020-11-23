@@ -1623,10 +1623,12 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
 void get_lightgun_input(unsigned port, uint32_t *zapdata)
 {
     int i = 0;
+    uint32_t zapper_buf = 0;
 
     for (i = 0; i < 2; i++){
-        zapdata[i] = input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[i].retro);
+        zapper_buf |= input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[i].retro);
     }
+    zapdata[0] = zapper_buf;
 }
 
 static void FCEUD_UpdateInput(void)

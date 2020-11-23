@@ -737,7 +737,7 @@ static void update_nes_controllers(unsigned port, unsigned device)
          FCEU_printf(" Player %u: Zapper\n", port + 1);
          break;
       case RETRO_DEVICE_LCDZAPPER:
-          FCEUI_SetInput(port, SI_LCDZAPPER, nes_input.LightgunData, 1);
+          FCEUI_SetInput(port, SI_LCDZAPPER, nes_input.LightgunData, 0);
           FCEU_printf(" Player %u: NES Zapper\n", port + 1);
           break;
       case RETRO_DEVICE_ARKANOID:
@@ -1623,9 +1623,9 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
 void get_lightgun_input(unsigned port, uint32_t *zapdata)
 {
     uint8_t input_buf = 0;
-    int player_enabled = (nes_input.type[port] == RETRO_DEVICE_NESZAPPER);
+    int player_enabled = (nes_input.type[port] == RETRO_DEVICE_LCDZAPPER || (nes_input.type[port] == RETRO_DEVICE_NESZAPPER);
 
-    if (nes_input.type[port] == RETRO_DEVICE_NESZAPPER)
+    if (player_enabled)
     {
         if (1 << RETRO_DEVICE_ID_NESZAPPER_HIT)
             input_buf |= NESZAPPER_HIT;

@@ -1620,14 +1620,13 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
    }
 }
 
-void get_lightgun_input(unsigned port, uint32_t zapdata)
+void get_lightgun_input(unsigned port, uint32_t *zapdata)
 {
     int i = 0;
     uint32_t zapper_buf = 0;
 
     for (i = 0; i < 2; i++){
-        if (input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[i].retro))
-        zapper_buf |= 1 << i;
+        zapper_buf |= input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[i].retro);
     }
     zapdata = zapper_buf;
 }

@@ -133,7 +133,7 @@ typedef struct {
    /* input data */
    uint32_t JSReturn;                   /* player input data, 1 byte per player (1-4) */
    uint32_t MouseData[MAX_PORTS][3];    /* nes mouse data */
-   uint32_t LightgunData[MAX_PORTS]; /* nes lightgun data */
+   uint32_t LightgunData[MAX_PORTS][2]; /* nes lightgun data */
    uint32_t FamicomData[3];             /* Famicom expansion port data */
 } NES_INPUT_T;
 
@@ -1622,8 +1622,8 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
 
 void get_lightgun_input(unsigned port, uint32_t* zapdata)
 {
-        zapdata |= input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[0].retro) ? bindmap[0].nes : 0;
-        zapdata |= input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[1].retro) ? bindmap[1].nes : 0 << 1;
+        zapdata[0] = input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[0].retro) ? bindmap[0].nes : 0;
+        zapdata[1] = input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[1].retro) ? bindmap[1].nes : 0 << 1;
 }
 
 static void FCEUD_UpdateInput(void)

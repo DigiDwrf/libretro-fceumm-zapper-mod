@@ -252,10 +252,6 @@ extern "C" {
 #define RETRO_DEVICE_ID_POINTER_PRESSED   2
 #define RETRO_DEVICE_ID_POINTER_COUNT     3
 
-/* Id values for NES ZAPPER. */
-#define RETRO_DEVICE_ID_NESZAPPER_TRIGGER      0
-#define RETRO_DEVICE_ID_NESZAPPER_HIT          1
-
 /* Returned from retro_get_region(). */
 #define RETRO_REGION_NTSC  0
 #define RETRO_REGION_PAL   1

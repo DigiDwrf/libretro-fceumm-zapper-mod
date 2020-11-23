@@ -39,7 +39,7 @@
 #define RETRO_DEVICE_AUTO        RETRO_DEVICE_JOYPAD
 #define RETRO_DEVICE_GAMEPAD     RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_JOYPAD, 1)
 #define RETRO_DEVICE_ZAPPER      RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_MOUSE,  0)
-#define RETRO_DEVICE_NESZAPPER   RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_LIGHTGUN,  0)
+#define RETRO_DEVICE_NESZAPPER   RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_JOYPAD, 3)
 #define RETRO_DEVICE_ARKANOID    RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_MOUSE,  1)
 
 #define RETRO_DEVICE_FC_ARKANOID RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_MOUSE,  2)
@@ -133,7 +133,7 @@ typedef struct {
    /* input data */
    uint32_t JSReturn;                  /* player input data, 1 byte per player (1-4) */
    uint32_t MouseData[MAX_PORTS][3];   /* nes mouse data */
-   uint32_t LightgunData;              /* nes lightgun data */
+   uint32_t LightgunData[MAX_PORTS];   /* nes lightgun data */
    uint32_t FamicomData[3];            /* Famicom expansion port data */
 } NES_INPUT_T;
 
@@ -737,7 +737,7 @@ static void update_nes_controllers(unsigned port, unsigned device)
          FCEU_printf(" Player %u: Zapper\n", port + 1);
          break;
       case RETRO_DEVICE_NESZAPPER:
-          FCEUI_SetInput(port, SI_NESZAPPER, nes_input.LightgunData, 0);
+          FCEUI_SetInput(port, SI_NESZAPPER, nes_input.LightgunData[port], 1);
           FCEU_printf(" Player %u: NES Zapper\n", port + 1);
           break;
       case RETRO_DEVICE_ARKANOID:
@@ -1725,7 +1725,7 @@ static void FCEUD_UpdateInput(void)
             get_mouse_input(port, nes_input.MouseData[port]);
             break;
          case RETRO_DEVICE_NESZAPPER:
-            get_lightgun_input(port, nes_input.LightgunData);
+            get_lightgun_input(port, nes_input.LightgunData[port]);
             break;
       }
    }

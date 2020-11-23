@@ -297,7 +297,7 @@ static void FASTAPASS(1) SetInputStuff(int x)
       case SI_ZAPPER:
          JPorts[x] = FCEU_InitZapper(x);
          break;
-      case SI_LCDZAPPER:
+      case SI_NESZAPPER:
          JPorts[x] = FCEU_InitLCDCompZapper(x);
          break;
       case SI_POWERPADA:

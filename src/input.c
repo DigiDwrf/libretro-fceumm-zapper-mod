@@ -298,11 +298,7 @@ static void FASTAPASS(1) SetInputStuff(int x)
          JPorts[x] = FCEU_InitZapper(x);
          break;
       case SI_LCDZAPPER:
-         //JPorts[x] = FCEU_InitLCDCompZapper(x);
-          if (GameInfo->type == GIT_VSUNI)
-              JPorts[x] = &GPCVS;
-          else
-              JPorts[x] = &GPC;
+         JPorts[x] = FCEU_InitLCDCompZapper(x);
          break;
       case SI_POWERPADA:
          JPorts[x] = FCEU_InitPowerpadA(x);

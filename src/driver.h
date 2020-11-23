@@ -62,7 +62,7 @@ void FCEUI_DisableFourScore(int s);
 #define SI_NONE      0
 #define SI_GAMEPAD   1
 #define SI_ZAPPER    2
-#define SI_LCDZAPPER 3
+#define SI_NESZAPPER 3
 #define SI_POWERPADA 4
 #define SI_POWERPADB 5
 #define SI_ARKANOID  6

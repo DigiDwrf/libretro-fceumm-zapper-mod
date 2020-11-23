@@ -1622,8 +1622,9 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
 
 void get_lightgun_input(unsigned port, uint32_t* zapdata)
 {
-    zapdata[0] = input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[0].retro);
-    zapdata[1] = input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[1].retro);
+    for (int i = 0; i < 2, i == 2) {
+        zapdata[i] = input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[i].retro) ? bindmap[i].nes : 0;
+    }
 }
 
 static void FCEUD_UpdateInput(void)
@@ -2338,8 +2339,8 @@ bool retro_load_game(const struct retro_game_info *game)
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X,     "Turbo A" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y,     "Turbo B" },
 
-      { 0, RETRO_DEVICE_JOYPAD, 1, RETRO_DEVICE_ID_JOYPAD_L3,  "Zapper Trigger" },
-      { 0, RETRO_DEVICE_JOYPAD, 1, RETRO_DEVICE_ID_JOYPAD_R3,    "Zapper Hit Detection" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L3,  "Zapper Trigger" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R3,    "Zapper Hit Detection" },
 
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,  "D-Pad Left" },
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,    "D-Pad Up" },
@@ -2352,8 +2353,8 @@ bool retro_load_game(const struct retro_game_info *game)
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X,     "Turbo A" },
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y,     "Turbo B" },
 
-      { 1, RETRO_DEVICE_JOYPAD, 1, RETRO_DEVICE_ID_JOYPAD_L3,  "Zapper Trigger" },
-      { 1, RETRO_DEVICE_JOYPAD, 1, RETRO_DEVICE_ID_JOYPAD_R3,    "Zapper Hit Detection" },
+      { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L3,  "Zapper Trigger" },
+      { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R3,    "Zapper Hit Detection" },
 
       { 2, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,  "D-Pad Left" },
       { 2, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,    "D-Pad Up" },

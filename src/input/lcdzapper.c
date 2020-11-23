@@ -42,7 +42,7 @@ void UpdateLCDCompZapper(int w, void* data, int arg)
 
 static INPUTC LCDCompZapperCtrl = { ReadLCDCompZapper,0,StrobeLCDCompZapper,UpdateLCDCompZapper,0,0 };
 
-INPUTC* FCEU_InitLCDCompZapper(int w)
+INPUTC *FCEU_InitLCDCompZapper(int w)
 {
     lcdCompZapperStrobe[w] = lcdCompZapperData[w] = 0;
     return(&LCDCompZapperCtrl);

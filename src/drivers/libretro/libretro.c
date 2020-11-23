@@ -1638,7 +1638,9 @@ void get_lightgun_input(unsigned port, uint32_t *zapdata)
             if (i == 0) {
                 input_buf = 1;
             }
-            input_buf |= input_cb(port, RETRO_DEVICE_NESZAPPER, 0, lightgunmap[i].retro) ? lightgunmap[i].nes : 0;
+            else {
+                input_buf |= input_cb(port, RETRO_DEVICE_NESZAPPER, 0, lightgunmap[i].retro) ? lightgunmap[i].nes : 0;
+            }
         }
     }
     nes_input.LightgunData |= (input_buf & 0xff) << (port << 3);

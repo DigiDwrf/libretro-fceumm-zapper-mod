@@ -138,8 +138,8 @@ typedef struct {
 } NES_INPUT_T;
 
 static NES_INPUT_T nes_input = { 0 };
-enum RetroZapperInputModes{RetroLightgun, RetroMouse, RetroPointer, RetroZapper};
-static enum RetroZapperInputModes zappermode = RetroZapper;
+enum RetroZapperInputModes{RetroLightgun, RetroMouse, RetroPointer};
+static enum RetroZapperInputModes zappermode = RetroLightgun;
 
 static bool libretro_supports_bitmasks = false;
 
@@ -898,17 +898,19 @@ static void set_variables(void)
 void retro_set_environment(retro_environment_t cb)
 {
    static const struct retro_controller_description pads1[] = {
-      { "Auto",    RETRO_DEVICE_AUTO },
-      { "Gamepad", RETRO_DEVICE_GAMEPAD },
-      { "Zapper",  RETRO_DEVICE_ZAPPER },
+      { "Auto",          RETRO_DEVICE_AUTO },
+      { "Gamepad",       RETRO_DEVICE_GAMEPAD },
+      { "Zapper",        RETRO_DEVICE_ZAPPER },
+      { "LCD Zapper",    RETRO_DEVICE_LCDZAPPER },
       { 0, 0 },
    };
 
    static const struct retro_controller_description pads2[] = {
-      { "Auto",     RETRO_DEVICE_AUTO },
-      { "Gamepad",  RETRO_DEVICE_GAMEPAD },
-      { "Arkanoid", RETRO_DEVICE_ARKANOID },
-      { "Zapper",   RETRO_DEVICE_ZAPPER },
+      { "Auto",          RETRO_DEVICE_AUTO },
+      { "Gamepad",       RETRO_DEVICE_GAMEPAD },
+      { "Arkanoid",      RETRO_DEVICE_ARKANOID },
+      { "Zapper",        RETRO_DEVICE_ZAPPER },
+      { "LCD Zapper",    RETRO_DEVICE_LCDZAPPER },
       { 0, 0 },
    };
 
@@ -934,8 +936,8 @@ void retro_set_environment(retro_environment_t cb)
    };
 
    static const struct retro_controller_info ports[] = {
-      { pads1, 3 },
-      { pads2, 4 },
+      { pads1, 4 },
+      { pads2, 5 },
       { pads3, 2 },
       { pads4, 2 },
       { pads5, 5 },
@@ -1620,29 +1622,26 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
 
 void get_lightgun_input(unsigned port, uint32_t *zapdata)
 {
-    if (zappermode == RetroZapper)
-    {
-        uint8_t input_buf = 0;
-        int player_enabled = (nes_input.type[port] == RETRO_DEVICE_NESZAPPER);
+    uint8_t input_buf = 0;
+    int player_enabled = (nes_input.type[port] == RETRO_DEVICE_NESZAPPER);
 
-        if (nes_input.type[port] == RETRO_DEVICE_NESZAPPER)
-        {
-            if (1 << RETRO_DEVICE_ID_NESZAPPER_HIT)
-                input_buf |= NESZAPPER_HIT;
-            if (1 << RETRO_DEVICE_ID_NESZAPPER_TRIGGER)
-                input_buf |= NESZAPPER_TRIGGER;
-        }
-        else
-        {
-            for (int i = 0; i < 4; i++) {
-                if (i == 0) {
-                    input_buf = 1;
-                }
-                input_buf |= input_cb(port, RETRO_DEVICE_NESZAPPER, 0, lightgunmap[i].retro) ? lightgunmap[i].nes : 0;
-            }
-        }
-        nes_input.LightgunData |= (input_buf & 0xff) << (port << 3);
+    if (nes_input.type[port] == RETRO_DEVICE_NESZAPPER)
+    {
+        if (1 << RETRO_DEVICE_ID_NESZAPPER_HIT)
+            input_buf |= NESZAPPER_HIT;
+        if (1 << RETRO_DEVICE_ID_NESZAPPER_TRIGGER)
+            input_buf |= NESZAPPER_TRIGGER;
     }
+    else
+    {
+        for (int i = 0; i < 4; i++) {
+            if (i == 0) {
+                input_buf = 1;
+            }
+            input_buf |= input_cb(port, RETRO_DEVICE_NESZAPPER, 0, lightgunmap[i].retro) ? lightgunmap[i].nes : 0;
+        }
+    }
+    nes_input.LightgunData |= (input_buf & 0xff) << (port << 3);
 }
 
 static void FCEUD_UpdateInput(void)

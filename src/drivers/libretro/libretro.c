@@ -1623,7 +1623,7 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
 void get_lightgun_input(unsigned port, uint32_t *zapdata)
 {
     uint8_t input_buf = 0;
-    int player_enabled = (nes_input.type[port] == RETRO_DEVICE_LCDZAPPER || (nes_input.type[port] == RETRO_DEVICE_NESZAPPER);
+    int player_enabled = (nes_input.type[port] == RETRO_DEVICE_LCDZAPPER) || (nes_input.type[port] == RETRO_DEVICE_NESZAPPER);
 
     if (player_enabled)
     {

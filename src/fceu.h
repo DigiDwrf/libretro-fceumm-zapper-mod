@@ -130,7 +130,7 @@ extern uint8 vsdip;
 #define JOY_LEFT     0x40
 #define JOY_RIGHT    0x80
 
-#define ZAPPER_TRIGGER    0x1
-#define ZAPPER_HIT        0x0
+#define ZAPPER_TRIGGER    1
+#define ZAPPER_HIT        1
 
 #endif

@@ -116,8 +116,8 @@ static const keymap bindmap[] = {
 };
 
 static const keymap lightgunmap[] = {
-   { RETRO_DEVICE_ID_NESZAPPER_TRIGGER, NESZAPPER_TRIGGER },
-   { RETRO_DEVICE_ID_NESZAPPER_HIT, NESZAPPER_HIT },
+   { RETRO_DEVICE_ID_JOYPAD_L3, ZAPPER_TRIGGER },
+   { RETRO_DEVICE_ID_JOYPAD_R3, ZAPPER_HIT },
 };
 
 typedef struct {
@@ -131,10 +131,10 @@ typedef struct {
    uint32_t type[MAX_PLAYERS + 1];     /* 4-players + famicom expansion */
 
    /* input data */
-   uint32_t JSReturn;                  /* player input data, 1 byte per player (1-4) */
-   uint32_t MouseData[MAX_PORTS][3];   /* nes mouse data */
-   uint32_t LightgunData[MAX_PORTS];   /* nes lightgun data */
-   uint32_t FamicomData[3];            /* Famicom expansion port data */
+   uint32_t JSReturn;                   /* player input data, 1 byte per player (1-4) */
+   uint32_t MouseData[MAX_PORTS][3];    /* nes mouse data */
+   uint32_t LightgunData[MAX_PORTS][2]; /* nes lightgun data */
+   uint32_t FamicomData[3];             /* Famicom expansion port data */
 } NES_INPUT_T;
 
 static NES_INPUT_T nes_input = { 0 };
@@ -1620,8 +1620,10 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
    }
 }
 
-void get_lightgun_input(unsigned port, uint32_t* zapdata){
-
+void get_lightgun_input(unsigned port, uint32_t* zapdata)
+{
+    zapdata[0] = input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[0].retro);
+    zapdata[1] = input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[1].retro);
 }
 
 static void FCEUD_UpdateInput(void)
@@ -1668,8 +1670,7 @@ static void FCEUD_UpdateInput(void)
          else
          {
             for (i = 0; i < MAX_BUTTONS; i++)
-               input_buf |= input_cb(player, RETRO_DEVICE_JOYPAD, 0,
-                     bindmap[i].retro) ? bindmap[i].nes : 0;
+               input_buf |= input_cb(player, RETRO_DEVICE_JOYPAD, 0, bindmap[i].retro) ? bindmap[i].nes : 0;
          }
 
          /* Turbo A and Turbo B buttons are
@@ -2337,6 +2338,9 @@ bool retro_load_game(const struct retro_game_info *game)
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X,     "Turbo A" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y,     "Turbo B" },
 
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L3,  "Zapper Trigger" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R3,    "Zapper Hit Detection" },
+
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,  "D-Pad Left" },
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,    "D-Pad Up" },
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_DOWN,  "D-Pad Down" },
@@ -2347,6 +2351,9 @@ bool retro_load_game(const struct retro_game_info *game)
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_START,    "Start" },
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X,     "Turbo A" },
       { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y,     "Turbo B" },
+
+      { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L3,  "Zapper Trigger" },
+      { 1, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R3,    "Zapper Hit Detection" },
 
       { 2, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,  "D-Pad Left" },
       { 2, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,    "D-Pad Up" },

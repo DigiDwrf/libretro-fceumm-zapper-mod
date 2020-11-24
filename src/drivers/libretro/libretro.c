@@ -1635,7 +1635,7 @@ static uint32_t UpdateLCDCompatibleZapperData(unsigned port)
 
 void get_lightgun_input(unsigned port, uint32_t* zapdata)
 {
-    zapdata = *UpdateLCDCompatibleZapperData(port); // buffer to hold the state of the zapper
+    zapdata |= UpdateLCDCompatibleZapperData(port); // buffer to hold the state of the zapper
 }
 
 static void FCEUD_UpdateInput(void)

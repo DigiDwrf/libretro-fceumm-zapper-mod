@@ -133,7 +133,7 @@ typedef struct {
    /* input data */
    uint32_t JSReturn;                   /* player input data, 1 byte per player (1-4) */
    uint32_t MouseData[MAX_PORTS][3];    /* nes mouse data */
-   uint32_t LightgunData[MAX_PORTS][2];    /* nes lightgun data */
+   uint32_t LightgunData[MAX_PORTS];    /* nes lightgun data */
    uint32_t FamicomData[3];             /* Famicom expansion port data */
 } NES_INPUT_T;
 
@@ -1620,15 +1620,11 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
    }
 }
 
-// buffer to hold the state of the zapper.
-static uint32 lcdcompzapperbuf[2];
-
 // Determines if the zapper trigger is pressed and/or if it's sensing light based on the button config and return
 // the result as a two bit value.
-static uint32 UpdateLCDCompatibleZapperData(int w)
+static uint32 UpdateLCDCompatibleZapperData(unsigned port)
 {
     uint32 zapper_buf = 0;
-    nes_input *lightgunmap = nes_input.LightgunData[w];
     int i;
 
     for (i = 0; i < 2; i++)
@@ -1639,7 +1635,8 @@ static uint32 UpdateLCDCompatibleZapperData(int w)
 
 void get_lightgun_input(unsigned port)
 {
-    lcdcompzapperbuf[port] = UpdateLCDCompatibleZapperData(port);
+
+    nes_input.LightgunData[port] = UpdateLCDCompatibleZapperData(port); // buffer to hold the state of the zapper
 }
 
 static void FCEUD_UpdateInput(void)

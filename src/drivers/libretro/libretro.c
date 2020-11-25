@@ -1620,9 +1620,6 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
    }
 }
 
-// buffer to hold the state of the zapper.
-static uint32 lcdcompzapperbuf[2];
-
 // Determines if the zapper trigger is pressed and/or if it's sensing light based on the button config and return
 // the result as a two bit value.
 static uint32 UpdateLCDCompatibleZapperData(unsigned port)
@@ -1631,16 +1628,14 @@ static uint32 UpdateLCDCompatibleZapperData(unsigned port)
     uint32 input_buf = 0;
 
     for (i = 0; i < 2; i++)
-        input_buf |= input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[i].retro) ? bindmap[i].nes : 0;
+        if (input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[i].retro)) input_buf |= 1 << i;
 
     return input_buf;
 }
 
-void get_lightgun_input(unsigned port, uint32_t* zapdata)
+void get_lightgun_input(unsigned port, uint32_t *zapper)
 {
-    lcdcompzapperbuf[port] = UpdateLCDCompatibleZapperData(port);
-   
-    zapdata |= input_buf;
+    zapper[port] = UpdateLCDCompatibleZapperData(port);
 }
 
 static void FCEUD_UpdateInput(void)

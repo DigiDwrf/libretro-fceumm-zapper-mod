@@ -133,7 +133,7 @@ typedef struct {
    /* input data */
    uint32_t JSReturn;                   /* player input data, 1 byte per player (1-4) */
    uint32_t MouseData[MAX_PORTS][3];    /* nes mouse data */
-   uint32_t LightgunData[MAX_PORTS][2];    /* nes lightgun data */
+   uint32_t LightgunData[MAX_PORTS];    /* nes lightgun data */
    uint32_t FamicomData[3];             /* Famicom expansion port data */
 } NES_INPUT_T;
 
@@ -737,7 +737,7 @@ static void update_nes_controllers(unsigned port, unsigned device)
          FCEU_printf(" Player %u: Zapper\n", port + 1);
          break;
       case RETRO_DEVICE_NESZAPPER:
-         FCEUI_SetInput(port, SI_NESZAPPER, nes_input.LightgunData[port], 1);
+         FCEUI_SetInput(port, SI_NESZAPPER, nes_input.LightgunData[port], 0);
          FCEU_printf(" Player %u: NES Zapper\n", port + 1);
          break;
       case RETRO_DEVICE_ARKANOID:
@@ -1620,12 +1620,27 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
    }
 }
 
+// buffer to hold the state of the zapper.
+static uint32 lcdcompzapperbuf[2];
+
+// Determines if the zapper trigger is pressed and/or if it's sensing light based on the button config and return
+// the result as a two bit value.
+static uint32 UpdateLCDCompatibleZapperData(unsigned port)
+{
+    int i = 0;
+    uint32 input_buf = 0;
+
+    for (i = 0; i < 2; i++)
+        input_buf |= input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[i].retro) ? bindmap[i].nes : 0;
+
+    return input_buf;
+}
+
 void get_lightgun_input(unsigned port, uint32_t* zapdata)
 {
-    if (input_cb(port, RETRO_DEVICE_JOYPAD, 0, ZAPPER_TRIGGER))
-        zapdata[0] = 0x1;
-    if (input_cb(port, RETRO_DEVICE_JOYPAD, 0, ZAPPER_DETECT))
-        zapdata[1] = 0x1;
+    lcdcompzapperbuf[port] = UpdateLCDCompatibleZapperData(port);
+   
+    zapdata |= input_buf;
 }
 
 static void FCEUD_UpdateInput(void)

@@ -1628,7 +1628,7 @@ void get_lightgun_input(unsigned port)
     for (i = 0; i < 2; i++)
         if (input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[i].retro)) zapper_buf |= 1 << i;
 
-    nes_input.LightgunData[port] = &zapper_buf;
+    nes_input.LightgunData[port] = *zapper_buf;
 }
 
 static void FCEUD_UpdateInput(void)

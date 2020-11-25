@@ -1628,7 +1628,7 @@ void get_lightgun_input(unsigned port, uint32_t* zapdata)
     //for (i = 0; i < 2; i++)
        // if (input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[i].retro)) zapper_buf |= 1 << i;
 
-    zapdata = 0x11;
+    zapdata |= 0x3;
 }
 
 static void FCEUD_UpdateInput(void)

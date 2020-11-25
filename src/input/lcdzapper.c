@@ -18,7 +18,6 @@
 #include "share.h"
 
 static uint32 lcdCompZapperStrobe[2];
-//static uint32 lcdCompZapperData[2];
 
 typedef struct {
     uint32 trigger;
@@ -35,7 +34,6 @@ static uint8 FP_FASTAPASS(1) ReadLCDCompZapper(int w)
     if (!ZD[w].detect)
         ret |= 0x8;
     return ret;
-    //return lcdCompZapperData[w];
 }
 
 static void FP_FASTAPASS(1) StrobeLCDCompZapper(int w)
@@ -45,13 +43,7 @@ static void FP_FASTAPASS(1) StrobeLCDCompZapper(int w)
 
 void FP_FASTAPASS(3) UpdateLCDCompZapper(int w, void *data, int arg)
 {
-    // In the '(*(uint32*)data)' variable, bit 0 holds the trigger value and bit 1 holds the light sense value.
-    // Ultimately this needs to be converted from 0000 00lt to 000t l000 where l is the light bit and t
-    // is the trigger bit.
-    // l must be inverted because 0: detected; 1: not detected
-    //lcdCompZapperData[w] = ((((*(uint32*)data) & 1) << 4) | (((*(uint32*)data) & 2 ^ 2) << 2));
-
-    uint32* ptr = (uint32*)data;
+     uint32* ptr = (uint32*)data;
 
     ZD[w].trigger = ptr[0];
     ZD[w].detect = ptr[1];
@@ -62,6 +54,5 @@ static INPUTC LCDCompZapperCtrl = { ReadLCDCompZapper,0,StrobeLCDCompZapper,Upda
 INPUTC *FCEU_InitLCDCompZapper(int w)
 {
     memset(&ZD[w], 0, sizeof(ZAPPER));
-    //lcdCompZapperStrobe[w] = lcdCompZapperData[w] = 0;
     return(&LCDCompZapperCtrl);
 }

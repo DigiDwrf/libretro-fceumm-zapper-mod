@@ -1623,9 +1623,9 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
 void get_lightgun_input(unsigned port, uint32_t* zapdata)
 {
     if (input_cb(port, RETRO_DEVICE_JOYPAD, 0, ZAPPER_TRIGGER))
-        zapdata[0] |= 0x1;
+        zapdata[0] = 1;
     if (input_cb(port, RETRO_DEVICE_JOYPAD, 0, ZAPPER_DETECT))
-        zapdata[1] |= 0x1;
+        zapdata[1] = 1;
 }
 
 static void FCEUD_UpdateInput(void)

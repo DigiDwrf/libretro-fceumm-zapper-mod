@@ -38,7 +38,7 @@ static uint8 FP_FASTAPASS(1) ReadLCDCompZapper(int w)
 
 static void FP_FASTAPASS(1) StrobeLCDCompZapper(int w)
 {
-    lcdCompZapperStrobe[w] = 1;
+    lcdCompZapperStrobe[w] = 0;
 }
 
 void FP_FASTAPASS(3) UpdateLCDCompZapper(int w, void *data, int arg)

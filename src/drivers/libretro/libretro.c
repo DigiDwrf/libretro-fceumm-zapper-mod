@@ -117,7 +117,7 @@ static const keymap bindmap[] = {
 
 static const keymap lightgunmap[] = {
    { RETRO_DEVICE_ID_JOYPAD_L3, ZAPPER_TRIGGER },
-   { RETRO_DEVICE_ID_JOYPAD_R3, ZAPPER_HIT },
+   { RETRO_DEVICE_ID_JOYPAD_R3, ZAPPER_DETECT },
 };
 
 typedef struct {
@@ -1622,9 +1622,8 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
 
 void get_lightgun_input(unsigned port, uint32_t* zapdata)
 {
-    int i = 0;
-    for (i = 0; i < 2; i++)
-        zapdata[i] = input_cb(port, RETRO_DEVICE_JOYPAD, 0, lightgunmap[i].retro);
+    zapdata[0] = input_cb(port, RETRO_DEVICE_JOYPAD, 0, ZAPPER_TRIGGER);
+    zapdata[1] = input_cb(port, RETRO_DEVICE_JOYPAD, 0, ZAPPER_DETECT);
 }
 
 static void FCEUD_UpdateInput(void)

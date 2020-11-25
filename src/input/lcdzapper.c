@@ -20,9 +20,20 @@
 static uint32 lcdCompZapperStrobe[2];
 static uint32 lcdCompZapperData[2];
 
+typedef struct {
+    int trigger, detect;
+} ZAPPER;
+
+static ZAPPER ZD[2];
+
 static uint8 FP_FASTAPASS(1) ReadLCDCompZapper(int w)
 {
-    return lcdCompZapperData[w];
+    uint8 lcdCompZapperData = 0;
+    if (ZD[w].trigger)
+        lcdCompZapperData |= 0x1;
+    if (ZD[w].detect)
+        lcdCompZapperData |= 0x2;
+    return lcdCompZapperData;
 }
 
 static void FP_FASTAPASS(1) StrobeLCDCompZapper(int w)

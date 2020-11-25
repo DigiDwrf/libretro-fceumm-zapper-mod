@@ -28,12 +28,14 @@ static ZAPPER ZD[2];
 
 static uint8 FP_FASTAPASS(1) ReadLCDCompZapper(int w)
 {
-    uint8 lcdCompZapperData = 0;
+   /* uint8 lcdCompZapperData = 0;
     if (ZD[w].trigger)
         lcdCompZapperData |= 0x1;
     if (ZD[w].detect)
         lcdCompZapperData |= 0x2;
-    return lcdCompZapperData;
+    return lcdCompZapperData;*/
+
+    return lcdCompZapperData[w];
 }
 
 static void FP_FASTAPASS(1) StrobeLCDCompZapper(int w)
